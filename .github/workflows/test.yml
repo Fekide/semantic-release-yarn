@@ -9,7 +9,7 @@ name: Test
       - opened
       - synchronize
 jobs:
-  test_matrix:
+  test:
     strategy:
       matrix:
         node-version:
@@ -28,7 +28,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: "npm run test:ci"
-  test:
+  lint:
     runs-on: ubuntu-latest
     needs: test_matrix
     steps:
