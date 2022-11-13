@@ -1,10 +1,12 @@
-# @semantic-release/npm
+# @fekide/semantic-release-yarn
 
-[**semantic-release**](https://github.com/semantic-release/semantic-release) plugin to publish a [npm](https://www.npmjs.com) package.
+> Forked from [`@semantic-release/npm`](https://github.com/semantic-release/npm)
 
-[![Build Status](https://github.com/semantic-release/npm/workflows/Test/badge.svg)](https://github.com/semantic-release/npm/actions?query=workflow%3ATest+branch%3Amaster) [![npm latest version](https://img.shields.io/npm/v/@semantic-release/npm/latest.svg)](https://www.npmjs.com/package/@semantic-release/npm)
-[![npm next version](https://img.shields.io/npm/v/@semantic-release/npm/next.svg)](https://www.npmjs.com/package/@semantic-release/npm)
-[![npm beta version](https://img.shields.io/npm/v/@semantic-release/npm/beta.svg)](https://www.npmjs.com/package/@semantic-release/npm)
+[**semantic-release**](https://github.com/semantic-release/semantic-release) plugin to publish a [npm](https://www.npmjs.com) package using the yarn package manager.
+
+[![Build Status](https://github.com/fekide/semantic-release-yarn/workflows/Test/badge.svg)](https://github.com/fekide/semantic-release-yarn/actions?query=workflow%3ATest+branch%3Amaster) [![npm latest version](https://img.shields.io/npm/v/@fekide/semantic-release-yarn/latest.svg)](https://www.npmjs.com/package/@fekide/semantic-release-yarn)
+[![npm next version](https://img.shields.io/npm/v/@fekide/semantic-release-yarn/next.svg)](https://www.npmjs.com/package/@fekide/semantic-release-yarn)
+[![npm beta version](https://img.shields.io/npm/v/@fekide/semantic-release-yarn/beta.svg)](https://www.npmjs.com/package/@fekide/semantic-release-yarn)
 
 | Step               | Description |
 |--------------------|-------------|
@@ -13,10 +15,17 @@
 | `addChannel`       | [Add a release to a dist-tag](https://docs.npmjs.com/cli/dist-tag). |
 | `publish`          | [Publish the npm package](https://docs.npmjs.com/cli/publish) to the registry. |
 
+## When to use
+
+The prepare step of [`@semantic-release/npm`](https://github.com/semantic-release/npm) executes `npm install` which might result in the following two issues:
+- Unwanted package versions used for build since `yarn.lock` is not used
+- Errors when installing packages that do not occur with `yarn`
+- Allows usage of yarn `workspaces` (In combination with [multi-semantic-release](https://github.com/dhoulb/multi-semantic-release))
+
 ## Install
 
 ```bash
-$ npm install @semantic-release/npm -D
+$ npm install @fekide/semantic-release-yarn -D
 ```
 
 ## Usage
@@ -28,7 +37,7 @@ The plugin can be configured in the [**semantic-release** configuration file](ht
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
-    "@semantic-release/npm",
+    "@fekide/semantic-release-yarn",
   ]
 }
 ```
@@ -43,7 +52,7 @@ Both the [token](https://docs.npmjs.com/getting-started/working_with_tokens) and
 
 **Notes**:
 - Only the `auth-only` [level of npm two-factor authentication](https://docs.npmjs.com/getting-started/using-two-factor-authentication#levels-of-authentication) is supported, **semantic-release** will not work with the default `auth-and-writes` level.
-- The presence of an `.npmrc` file will override any specified environment variables.
+- The presence of an `.npmrc` or `.yarnrc` file will override any specified environment variables.
 
 ### Environment variables
 
@@ -94,7 +103,7 @@ The `npmPublish` and `tarballDir` option can be used to skip the publishing to t
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
-    ["@semantic-release/npm", {
+    ["@fekide/semantic-release-yarn", {
       "npmPublish": false,
       "tarballDir": "dist",
     }],
@@ -102,29 +111,5 @@ The `npmPublish` and `tarballDir` option can be used to skip the publishing to t
       "assets": "dist/*.tgz"
     }]
   ]
-}
-```
-
-When publishing from a sub-directory with the `pkgRoot` option, the `package.json` and `npm-shrinkwrap.json` updated with the new version can be moved to another directory with a `postversion`. For example with the [@semantic-release/git](https://github.com/semantic-release/git) plugin:
-
-```json
-{
-  "plugins": [
-    "@semantic-release/commit-analyzer",
-    "@semantic-release/release-notes-generator",
-    ["@semantic-release/npm", {
-      "pkgRoot": "dist",
-    }],
-    ["@semantic-release/git", {
-      "assets": ["package.json", "npm-shrinkwrap.json"]
-    }]
-  ]
-}
-```
-```json
-{
-  "scripts": {
-    "postversion": "cp -r package.json .. && cp -r npm-shrinkwrap.json .."
-  }
 }
 ```
