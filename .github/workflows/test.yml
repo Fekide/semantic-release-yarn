@@ -30,7 +30,7 @@ jobs:
       - run: "npm run test:ci"
   lint:
     runs-on: ubuntu-latest
-    needs: test_matrix
+    needs: test
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
