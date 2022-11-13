@@ -40,44 +40,14 @@ test('Updade package.json', async (t) => {
   t.deepEqual(t.context.log.args[0], ['Write version %s to package.json in %s', '1.0.0', cwd]);
 });
 
-test('Updade package.json and npm-shrinkwrap.json', async (t) => {
+test('Updade package.json with yarn.lock', async (t) => {
   const cwd = tempy.directory();
   const npmrc = tempy.file({name: '.npmrc'});
   const packagePath = path.resolve(cwd, 'package.json');
-  const shrinkwrapPath = path.resolve(cwd, 'npm-shrinkwrap.json');
-  await outputJson(packagePath, {version: '0.0.0-dev'});
-  // Create a npm-shrinkwrap.json file
-  await execa('npm', ['shrinkwrap'], {cwd});
-
-  await prepare(
-    npmrc,
-    {},
-    {
-      cwd,
-      env: {},
-      stdout: t.context.stdout,
-      stderr: t.context.stderr,
-      nextRelease: {version: '1.0.0'},
-      logger: t.context.logger,
-    }
-  );
-
-  // Verify package.json and npm-shrinkwrap.json have been updated
-  t.is((await readJson(packagePath)).version, '1.0.0');
-  t.is((await readJson(shrinkwrapPath)).version, '1.0.0');
-  // Verify the logger has been called with the version updated
-  t.deepEqual(t.context.log.args[0], ['Write version %s to package.json in %s', '1.0.0', cwd]);
-});
-
-test('Updade package.json and package-lock.json', async (t) => {
-  const cwd = tempy.directory();
-  const npmrc = tempy.file({name: '.npmrc'});
-  const packagePath = path.resolve(cwd, 'package.json');
-  const packageLockPath = path.resolve(cwd, 'package-lock.json');
   await outputJson(packagePath, {version: '0.0.0-dev'});
   await appendFile(path.resolve(cwd, '.npmrc'), 'package-lock = true');
-  // Create a package-lock.json file
-  await execa('npm', ['install'], {cwd});
+  // Create a yarn.lock file
+  await execa('yarn', ['install'], {cwd});
 
   await prepare(
     npmrc,
@@ -92,53 +62,21 @@ test('Updade package.json and package-lock.json', async (t) => {
     }
   );
 
-  // Verify package.json and package-lock.json have been updated
+  // Verify package.json has been updated
   t.is((await readJson(packagePath)).version, '1.0.0');
-  t.is((await readJson(packageLockPath)).version, '1.0.0');
   // Verify the logger has been called with the version updated
   t.deepEqual(t.context.log.args[0], ['Write version %s to package.json in %s', '1.0.0', cwd]);
 });
 
-test('Updade package.json and npm-shrinkwrap.json in a sub-directory', async (t) => {
+test('Updade package.json in a sub-directory', async (t) => {
   const cwd = tempy.directory();
   const npmrc = tempy.file({name: '.npmrc'});
   const pkgRoot = 'dist';
   const packagePath = path.resolve(cwd, pkgRoot, 'package.json');
-  const shrinkwrapPath = path.resolve(cwd, pkgRoot, 'npm-shrinkwrap.json');
-  await outputJson(packagePath, {version: '0.0.0-dev'});
-  // Create a npm-shrinkwrap.json file
-  await execa('npm', ['shrinkwrap'], {cwd: path.resolve(cwd, pkgRoot)});
-
-  await prepare(
-    npmrc,
-    {pkgRoot},
-    {
-      cwd,
-      env: {},
-      stdout: t.context.stdout,
-      stderr: t.context.stderr,
-      nextRelease: {version: '1.0.0'},
-      logger: t.context.logger,
-    }
-  );
-
-  // Verify package.json and npm-shrinkwrap.json have been updated
-  t.is((await readJson(packagePath)).version, '1.0.0');
-  t.is((await readJson(shrinkwrapPath)).version, '1.0.0');
-  // Verify the logger has been called with the version updated
-  t.deepEqual(t.context.log.args[0], ['Write version %s to package.json in %s', '1.0.0', path.resolve(cwd, pkgRoot)]);
-});
-
-test('Updade package.json and package-lock.json in a sub-directory', async (t) => {
-  const cwd = tempy.directory();
-  const npmrc = tempy.file({name: '.npmrc'});
-  const pkgRoot = 'dist';
-  const packagePath = path.resolve(cwd, pkgRoot, 'package.json');
-  const packageLockPath = path.resolve(cwd, pkgRoot, 'package-lock.json');
   await outputJson(packagePath, {version: '0.0.0-dev'});
   await appendFile(path.resolve(cwd, pkgRoot, '.npmrc'), 'package-lock = true');
-  // Create a package-lock.json file
-  await execa('npm', ['install'], {cwd: path.resolve(cwd, pkgRoot)});
+  // Create a yarn.lock file
+  await execa('yarn', ['install'], {cwd: path.resolve(cwd, pkgRoot)});
 
   await prepare(
     npmrc,
@@ -153,9 +91,8 @@ test('Updade package.json and package-lock.json in a sub-directory', async (t) =
     }
   );
 
-  // Verify package.json and package-lock.json have been updated
+  // Verify package.json has been updated
   t.is((await readJson(packagePath)).version, '1.0.0');
-  t.is((await readJson(packageLockPath)).version, '1.0.0');
   // Verify the logger has been called with the version updated
   t.deepEqual(t.context.log.args[0], ['Write version %s to package.json in %s', '1.0.0', path.resolve(cwd, pkgRoot)]);
 });
@@ -212,7 +149,7 @@ test('Create the package in the "tarballDir" directory', async (t) => {
   // Verify package.json has been updated
   t.is((await readJson(packagePath)).version, '1.0.0');
 
-  t.true(await pathExists(path.resolve(cwd, `tarball/${pkg.name}-1.0.0.tgz`)));
+  t.true(await pathExists(path.resolve(cwd, `tarball/${pkg.name}-v1.0.0.tgz`)));
   // Verify the logger has been called with the version updated
   t.deepEqual(t.context.log.args[0], ['Write version %s to package.json in %s', '1.0.0', cwd]);
 });
@@ -240,7 +177,7 @@ test('Only move the created tarball if the "tarballDir" directory is not the CWD
   // Verify package.json has been updated
   t.is((await readJson(packagePath)).version, '1.0.0');
 
-  t.true(await pathExists(path.resolve(cwd, `${pkg.name}-1.0.0.tgz`)));
+  t.true(await pathExists(path.resolve(cwd, `${pkg.name}-v1.0.0.tgz`)));
   // Verify the logger has been called with the version updated
   t.deepEqual(t.context.log.args[0], ['Write version %s to package.json in %s', '1.0.0', cwd]);
 });

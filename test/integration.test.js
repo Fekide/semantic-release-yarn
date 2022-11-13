@@ -66,7 +66,7 @@ test('Skip npm auth verification if "package.private" is true', async (t) => {
       {
         cwd,
         env: {},
-        options: {publish: ['@semantic-release/npm']},
+        options: {publish: ['@fekide/semantic-release-yarn']},
         stdout: t.context.stdout,
         stderr: t.context.stderr,
         logger: t.context.logger,
@@ -85,7 +85,7 @@ test('Skip npm token verification if "package.private" is true', async (t) => {
       {
         cwd,
         env: {},
-        options: {publish: ['@semantic-release/npm']},
+        options: {publish: ['@fekide/semantic-release-yarn']},
         stdout: t.context.stdout,
         stderr: t.context.stderr,
         logger: t.context.logger,
@@ -197,7 +197,10 @@ test('Throw SemanticReleaseError Array if config option are not valid in verifyC
           cwd,
           env: {},
           options: {
-            publish: ['@semantic-release/github', {path: '@semantic-release/npm', npmPublish, tarballDir, pkgRoot}],
+            publish: [
+              '@semantic-release/github',
+              {path: '@fekide/semantic-release-yarn', npmPublish, tarballDir, pkgRoot},
+            ],
           },
           stdout: t.context.stdout,
           stderr: t.context.stderr,
@@ -238,7 +241,7 @@ test('Publish the package', async (t) => {
 
   t.deepEqual(result, {name: 'npm package (@latest dist-tag)', url: undefined, channel: 'latest'});
   t.is((await readJson(path.resolve(cwd, 'package.json'))).version, '1.0.0');
-  t.false(await pathExists(path.resolve(cwd, `${pkg.name}-1.0.0.tgz`)));
+  t.false(await pathExists(path.resolve(cwd, `${pkg.name}-v1.0.0.tgz`)));
   t.is((await execa('npm', ['view', pkg.name, 'version'], {cwd, env: testEnv})).stdout, '1.0.0');
 });
 
@@ -267,7 +270,7 @@ test('Publish the package on a dist-tag', async (t) => {
     channel: 'next',
   });
   t.is((await readJson(path.resolve(cwd, 'package.json'))).version, '1.0.0');
-  t.false(await pathExists(path.resolve(cwd, `${pkg.name}-1.0.0.tgz`)));
+  t.false(await pathExists(path.resolve(cwd, `${pkg.name}-v1.0.0.tgz`)));
   t.is((await execa('npm', ['view', pkg.name, 'version'], {cwd, env: testEnv})).stdout, '1.0.0');
 });
 
@@ -292,7 +295,7 @@ test('Publish the package from a sub-directory', async (t) => {
 
   t.deepEqual(result, {name: 'npm package (@latest dist-tag)', url: undefined, channel: 'latest'});
   t.is((await readJson(path.resolve(cwd, 'dist/package.json'))).version, '1.0.0');
-  t.false(await pathExists(path.resolve(cwd, `${pkg.name}-1.0.0.tgz`)));
+  t.false(await pathExists(path.resolve(cwd, `${pkg.name}-v1.0.0.tgz`)));
   t.is((await execa('npm', ['view', pkg.name, 'version'], {cwd, env: testEnv})).stdout, '1.0.0');
 });
 
@@ -317,7 +320,7 @@ test('Create the package and skip publish ("npmPublish" is false)', async (t) =>
 
   t.false(result);
   t.is((await readJson(path.resolve(cwd, 'package.json'))).version, '1.0.0');
-  t.true(await pathExists(path.resolve(cwd, `tarball/${pkg.name}-1.0.0.tgz`)));
+  t.true(await pathExists(path.resolve(cwd, `tarball/${pkg.name}-v1.0.0.tgz`)));
   await t.throwsAsync(execa('npm', ['view', pkg.name, 'version'], {cwd, env: testEnv}));
 });
 
@@ -347,7 +350,7 @@ test('Create the package and skip publish ("package.private" is true)', async (t
 
   t.false(result);
   t.is((await readJson(path.resolve(cwd, 'package.json'))).version, '1.0.0');
-  t.true(await pathExists(path.resolve(cwd, `tarball/${pkg.name}-1.0.0.tgz`)));
+  t.true(await pathExists(path.resolve(cwd, `tarball/${pkg.name}-v1.0.0.tgz`)));
   await t.throwsAsync(execa('npm', ['view', pkg.name, 'version'], {cwd, env: testEnv}));
 });
 
@@ -372,7 +375,7 @@ test('Create the package and skip publish from a sub-directory ("npmPublish" is 
 
   t.false(result);
   t.is((await readJson(path.resolve(cwd, 'dist/package.json'))).version, '1.0.0');
-  t.true(await pathExists(path.resolve(cwd, `tarball/${pkg.name}-1.0.0.tgz`)));
+  t.true(await pathExists(path.resolve(cwd, `tarball/${pkg.name}-v1.0.0.tgz`)));
   await t.throwsAsync(execa('npm', ['view', pkg.name, 'version'], {cwd, env: testEnv}));
 });
 
@@ -402,7 +405,7 @@ test('Create the package and skip publish from a sub-directory ("package.private
 
   t.false(result);
   t.is((await readJson(path.resolve(cwd, 'dist/package.json'))).version, '1.0.0');
-  t.true(await pathExists(path.resolve(cwd, `tarball/${pkg.name}-1.0.0.tgz`)));
+  t.true(await pathExists(path.resolve(cwd, `tarball/${pkg.name}-v1.0.0.tgz`)));
   await t.throwsAsync(execa('npm', ['view', pkg.name, 'version'], {cwd, env: testEnv}));
 });
 
@@ -421,7 +424,7 @@ test('Throw SemanticReleaseError Array if config option are not valid in publish
         {
           cwd,
           env: {},
-          options: {publish: ['@semantic-release/github', '@semantic-release/npm']},
+          options: {publish: ['@semantic-release/github', '@fekide/semantic-release-yarn']},
           nextRelease: {version: '1.0.0'},
           stdout: t.context.stdout,
           stderr: t.context.stderr,
@@ -461,7 +464,7 @@ test('Prepare the package', async (t) => {
   );
 
   t.is((await readJson(path.resolve(cwd, 'package.json'))).version, '1.0.0');
-  t.false(await pathExists(path.resolve(cwd, `${pkg.name}-1.0.0.tgz`)));
+  t.false(await pathExists(path.resolve(cwd, `${pkg.name}-v1.0.0.tgz`)));
 });
 
 test('Prepare the package from a sub-directory', async (t) => {
@@ -484,7 +487,7 @@ test('Prepare the package from a sub-directory', async (t) => {
   );
 
   t.is((await readJson(path.resolve(cwd, 'dist/package.json'))).version, '1.0.0');
-  t.false(await pathExists(path.resolve(cwd, `${pkg.name}-1.0.0.tgz`)));
+  t.false(await pathExists(path.resolve(cwd, `${pkg.name}-v1.0.0.tgz`)));
 });
 
 test('Throw SemanticReleaseError Array if config option are not valid in prepare', async (t) => {
@@ -502,7 +505,7 @@ test('Throw SemanticReleaseError Array if config option are not valid in prepare
         {
           cwd,
           env: {},
-          options: {publish: ['@semantic-release/github', '@semantic-release/npm']},
+          options: {publish: ['@semantic-release/github', '@fekide/semantic-release-yarn']},
           nextRelease: {version: '1.0.0'},
           stdout: t.context.stdout,
           stderr: t.context.stderr,
@@ -668,7 +671,7 @@ test('Create the package in addChannel step', async (t) => {
   );
 
   t.is((await readJson(path.resolve(cwd, 'package.json'))).version, '1.0.0');
-  t.true(await pathExists(path.resolve(cwd, `tarball/${pkg.name}-1.0.0.tgz`)));
+  t.true(await pathExists(path.resolve(cwd, `tarball/${pkg.name}-v1.0.0.tgz`)));
 });
 
 test('Throw SemanticReleaseError Array if config option are not valid in addChannel', async (t) => {
@@ -687,7 +690,7 @@ test('Throw SemanticReleaseError Array if config option are not valid in addChan
         {
           cwd,
           env,
-          options: {publish: ['@semantic-release/github', '@semantic-release/npm']},
+          options: {publish: ['@semantic-release/github', '@fekide/semantic-release-yarn']},
           nextRelease: {version: '1.0.0'},
           stdout: t.context.stdout,
           stderr: t.context.stderr,
