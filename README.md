@@ -1,12 +1,12 @@
-# @fekide/semantic-release-yarn
+# @feki.de/semantic-release-yarn
 
 > Forked from [`@semantic-release/npm`](https://github.com/semantic-release/npm)
 
 [**semantic-release**](https://github.com/semantic-release/semantic-release) plugin to publish a [npm](https://www.npmjs.com) package using the yarn package manager.
 
-[![Build Status](https://github.com/fekide/semantic-release-yarn/workflows/Test/badge.svg)](https://github.com/fekide/semantic-release-yarn/actions?query=workflow%3ATest+branch%3Amaster) [![npm latest version](https://img.shields.io/npm/v/@fekide/semantic-release-yarn/latest.svg)](https://www.npmjs.com/package/@fekide/semantic-release-yarn)
-[![npm next version](https://img.shields.io/npm/v/@fekide/semantic-release-yarn/next.svg)](https://www.npmjs.com/package/@fekide/semantic-release-yarn)
-[![npm beta version](https://img.shields.io/npm/v/@fekide/semantic-release-yarn/beta.svg)](https://www.npmjs.com/package/@fekide/semantic-release-yarn)
+[![Build Status](https://github.com/fekide/semantic-release-yarn/workflows/Test/badge.svg)](https://github.com/fekide/semantic-release-yarn/actions?query=workflow%3ATest+branch%3Amaster) [![npm latest version](https://img.shields.io/npm/v/@feki.de/semantic-release-yarn/latest.svg)](https://www.npmjs.com/package/@feki.de/semantic-release-yarn)
+[![npm next version](https://img.shields.io/npm/v/@feki.de/semantic-release-yarn/next.svg)](https://www.npmjs.com/package/@feki.de/semantic-release-yarn)
+[![npm beta version](https://img.shields.io/npm/v/@feki.de/semantic-release-yarn/beta.svg)](https://www.npmjs.com/package/@feki.de/semantic-release-yarn)
 
 | Step               | Description |
 |--------------------|-------------|
@@ -25,7 +25,7 @@ The prepare step of [`@semantic-release/npm`](https://github.com/semantic-releas
 ## Install
 
 ```bash
-$ npm install @fekide/semantic-release-yarn -D
+$ npm install @feki.de/semantic-release-yarn -D
 ```
 
 ## Usage
@@ -37,7 +37,7 @@ The plugin can be configured in the [**semantic-release** configuration file](ht
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
-    "@fekide/semantic-release-yarn",
+    "@feki.de/semantic-release-yarn",
   ]
 }
 ```
@@ -103,7 +103,7 @@ The `npmPublish` and `tarballDir` option can be used to skip the publishing to t
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
-    ["@fekide/semantic-release-yarn", {
+    ["@feki.de/semantic-release-yarn", {
       "npmPublish": false,
       "tarballDir": "dist",
     }],

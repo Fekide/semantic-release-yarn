@@ -18,7 +18,7 @@ async function verifyConditions(pluginConfig, context) {
   if (context.options.publish) {
     const publishPlugin =
       castArray(context.options.publish).find(
-        (config) => config.path && config.path === '@fekide/semantic-release-yarn'
+        (config) => config.path && config.path === '@feki.de/semantic-release-yarn'
       ) || {};
 
     pluginConfig.npmPublish = defaultTo(pluginConfig.npmPublish, publishPlugin.npmPublish);

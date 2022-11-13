@@ -1,5 +1,5 @@
 {
-  "name": "@fekide/semantic-release-yarn",
+  "name": "@feki.de/semantic-release-yarn",
   "description": "semantic-release plugin to publish a npm package using yarn",
   "version": "0.0.0-development",
   "author": "Felix Haase <felix.haase@feki.de>",

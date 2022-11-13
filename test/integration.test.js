@@ -66,7 +66,7 @@ test('Skip npm auth verification if "package.private" is true', async (t) => {
       {
         cwd,
         env: {},
-        options: {publish: ['@fekide/semantic-release-yarn']},
+        options: {publish: ['@feki.de/semantic-release-yarn']},
         stdout: t.context.stdout,
         stderr: t.context.stderr,
         logger: t.context.logger,
@@ -85,7 +85,7 @@ test('Skip npm token verification if "package.private" is true', async (t) => {
       {
         cwd,
         env: {},
-        options: {publish: ['@fekide/semantic-release-yarn']},
+        options: {publish: ['@feki.de/semantic-release-yarn']},
         stdout: t.context.stdout,
         stderr: t.context.stderr,
         logger: t.context.logger,
@@ -199,7 +199,7 @@ test('Throw SemanticReleaseError Array if config option are not valid in verifyC
           options: {
             publish: [
               '@semantic-release/github',
-              {path: '@fekide/semantic-release-yarn', npmPublish, tarballDir, pkgRoot},
+              {path: '@feki.de/semantic-release-yarn', npmPublish, tarballDir, pkgRoot},
             ],
           },
           stdout: t.context.stdout,
@@ -424,7 +424,7 @@ test('Throw SemanticReleaseError Array if config option are not valid in publish
         {
           cwd,
           env: {},
-          options: {publish: ['@semantic-release/github', '@fekide/semantic-release-yarn']},
+          options: {publish: ['@semantic-release/github', '@feki.de/semantic-release-yarn']},
           nextRelease: {version: '1.0.0'},
           stdout: t.context.stdout,
           stderr: t.context.stderr,
@@ -505,7 +505,7 @@ test('Throw SemanticReleaseError Array if config option are not valid in prepare
         {
           cwd,
           env: {},
-          options: {publish: ['@semantic-release/github', '@fekide/semantic-release-yarn']},
+          options: {publish: ['@semantic-release/github', '@feki.de/semantic-release-yarn']},
           nextRelease: {version: '1.0.0'},
           stdout: t.context.stdout,
           stderr: t.context.stderr,
@@ -690,7 +690,7 @@ test('Throw SemanticReleaseError Array if config option are not valid in addChan
         {
           cwd,
           env,
-          options: {publish: ['@semantic-release/github', '@fekide/semantic-release-yarn']},
+          options: {publish: ['@semantic-release/github', '@feki.de/semantic-release-yarn']},
           nextRelease: {version: '1.0.0'},
           stdout: t.context.stdout,
           stderr: t.context.stderr,
